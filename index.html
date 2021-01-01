@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Dashboard</title>
 
+    <!-- Favicon: Prevent 404 error in the console -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
     <!-- Bootstrap -->
     <link
       rel="stylesheet"
@@ -20,6 +23,9 @@
       integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
       crossorigin="anonymous"
     />
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 
   </head>
   <body>
@@ -124,7 +130,7 @@
             <div class="card-body d-flex flex-row flex-wrap justify-content-center px-2">
 
               <!-- Day 1 -->
-              <div class="card text-center m-2">
+              <div class="five-day-card card text-center m-2">
                 <div class="card-header bg-info text-white">
                   <p id="day-one-date" class="h6 text-white mb-0">12/31/2020</p>
                 </div>
@@ -138,7 +144,7 @@
               </div>
 
               <!-- Day 2 -->
-              <div class="card text-center m-2">
+              <div class="five-day-card card text-center m-2">
                 <div class="card-header bg-info text-white">
                   <p id="day-two-date" class="h6 text-white mb-0">12/31/2020</p>
                 </div>
@@ -152,7 +158,7 @@
               </div>
 
               <!-- Day 3 -->
-              <div class="card text-center m-2">
+              <div class="five-day-card card text-center m-2">
                 <div class="card-header bg-info text-white">
                   <p id="day-three-date" class="h6 text-white mb-0">12/31/2020</p>
                 </div>
@@ -166,7 +172,7 @@
               </div>
 
               <!-- Day 4 -->
-              <div class="card text-center m-2">
+              <div class="five-day-card card text-center m-2">
                 <div class="card-header bg-info text-white">
                   <p id="day-four-date" class="h6 text-white mb-0">12/31/2020</p>
                 </div>
@@ -180,7 +186,7 @@
               </div>
 
               <!-- Day 5 -->
-              <div class="card text-center m-2">
+              <div class="five-day-card card text-center m-2">
                 <div class="card-header bg-info text-white">
                   <p id="day-five-date" class="h6 text-white mb-0">12/31/2020</p>
                 </div>
@@ -192,12 +198,7 @@
                   <p id="day-five-humidity" class="h6">40%</p>
                 </div>
               </div>
-
-
-
-
             </div>
-  
           </section>
 
         </main>

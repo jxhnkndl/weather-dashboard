@@ -16,14 +16,8 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 335px) {
   .five-day-card {
-    min-width: 50%;
-  }
-}
-
-@media (max-width: 576px) {
-  .five-day-card {
-    min-width: 60%;
+    min-width: 90%;
   }
 }

@@ -20,6 +20,7 @@
       integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
       crossorigin="anonymous"
     />
+
   </head>
   <body>
     <!-- Header -->
@@ -32,7 +33,7 @@
       <div class="row">
 
         <!-- Sidebar: Search + Search History -->
-        <aside class="col-md-4 bg-light p-2 rounded">
+        <aside class="col-md-4 bg-light px-2 mt-3 rounded">
 
           <!-- Search Input -->
           <form class="form-group mt-1">
@@ -53,15 +54,18 @@
             <li class="list-group-item">Toronto</li>
             <li class="list-group-item">Los Angeles</li>
           </ul>
+
         </aside>
 
         <!-- Main Content: Weather Dashboard -->
-        <main class="col-md-8">
-          <div class="card">
+        <main class="col-md-8 px-2 mt-3">
+
+          <!-- Section: Current Weather Data -->
+          <section class="card">
 
             <!-- Current City -->
             <div class="card-header">
-              <h2 class="my-0">Boston</h2>
+              <p class="h2 my-0">Boston</p>
             </div>
             
             <div class="card-body">
@@ -108,12 +112,97 @@
                 </div>
               </div>
             </div>  
-          </div>
+          </section>
+
+          <!-- Section: 5-Day Forecast -->
+          <section class="card mt-3">
+            <div class="card-header">
+              <p class="h2 my-0">5-Day Forecast:</p>
+            </div>
+
+            <!-- 5-Day Flex Container -->
+            <div class="card-body d-flex flex-row flex-wrap justify-content-center px-2">
+
+              <!-- Day 1 -->
+              <div class="card text-center m-2">
+                <div class="card-header bg-info text-white">
+                  <p id="day-one-date" class="h6 text-white mb-0">12/31/2020</p>
+                </div>
+                <div class="card-body bg-light">
+                  <img id="day-one-icon" src="">
+                  <p class="h6 font-weight-bold mb-0">Temp:</p>
+                  <p id="day-one-temp" class="h6 mb-3">75</p>
+                  <p class="h6 font-weight-bold mb-0">Humidity:</p>
+                  <p id="day-one-humidity" class="h6">40%</p>
+                </div>
+              </div>
+
+              <!-- Day 2 -->
+              <div class="card text-center m-2">
+                <div class="card-header bg-info text-white">
+                  <p id="day-two-date" class="h6 text-white mb-0">12/31/2020</p>
+                </div>
+                <div class="card-body bg-light">
+                  <img id="day-two-icon" src="">
+                  <p class="h6 font-weight-bold mb-0">Temp:</p>
+                  <p id="day-two-temp" class="h6 mb-3">75</p>
+                  <p class="h6 font-weight-bold mb-0">Humidity:</p>
+                  <p id="day-two-humidity" class="h6">40%</p>
+                </div>
+              </div>
+
+              <!-- Day 3 -->
+              <div class="card text-center m-2">
+                <div class="card-header bg-info text-white">
+                  <p id="day-three-date" class="h6 text-white mb-0">12/31/2020</p>
+                </div>
+                <div class="card-body bg-light">
+                  <img id="day-three-icon" src="">
+                  <p class="h6 font-weight-bold mb-0">Temp:</p>
+                  <p id="day-three-temp" class="h6 mb-3">75</p>
+                  <p class="h6 font-weight-bold mb-0">Humidity:</p>
+                  <p id="day-three-humidity" class="h6">40%</p>
+                </div>
+              </div>
+
+              <!-- Day 4 -->
+              <div class="card text-center m-2">
+                <div class="card-header bg-info text-white">
+                  <p id="day-four-date" class="h6 text-white mb-0">12/31/2020</p>
+                </div>
+                <div class="card-body bg-light">
+                  <img id="day-four-icon" src="">
+                  <p class="h6 font-weight-bold mb-0">Temp:</p>
+                  <p id="day-four-temp" class="h6 mb-3">75</p>
+                  <p class="h6 font-weight-bold mb-0">Humidity:</p>
+                  <p id="day-four-humidity" class="h6">40%</p>
+                </div>
+              </div>
+
+              <!-- Day 5 -->
+              <div class="card text-center m-2">
+                <div class="card-header bg-info text-white">
+                  <p id="day-five-date" class="h6 text-white mb-0">12/31/2020</p>
+                </div>
+                <div class="card-body bg-light">
+                  <img id="day-five-icon" src="">
+                  <p class="h6 font-weight-bold mb-0">Temp:</p>
+                  <p id="day-five-temp" class="h6 mb-3">75</p>
+                  <p class="h6 font-weight-bold mb-0">Humidity:</p>
+                  <p id="day-five-humidity" class="h6">40%</p>
+                </div>
+              </div>
+
+
+
+
+            </div>
+  
+          </section>
 
         </main>
       </div>
     </div>
-
 
     <!-- jQuery -->
     <script

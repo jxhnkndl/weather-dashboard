@@ -90,17 +90,20 @@ $(document).ready(function() {
 
     // Current weather conditions
     $("#city").text(data.current.name);
+
     $("#icon").attr(
       "src", 
       `http://openweathermap.org/img/w/${data.current.weather[0].icon}.png`);
     $("#icon").attr("alt", data.current.weather[0].description);
+
     $("#conditions").text(data.current.weather[0].main);
-    $("#temperature").text(`${data.current.main.temp}&#176;`);
+    $("#temperature").text(`${data.current.main.temp}\u00B0`);
     $("#humidity").text(`${data.current.main.humidity}%`);
     $("#wind-speed").text(`${data.current.wind.speed} mph`);
+
+    $("#uv-index").removeClass("bg-success bg-warning bg-danger")
     $("#uv-index").text(data.uv.value);
 
-    // Determine UV index level and paint background
     if (data.uv.value < 3) {
       $("#uv-index").addClass("bg-success");
     } else if (data.uv.value >= 3 && data.uv.value < 6) {
@@ -110,8 +113,6 @@ $(document).ready(function() {
     } else {
       console.log("Invalid UV index value.");
     }
-
-
   }
 
 
@@ -121,6 +122,7 @@ $(document).ready(function() {
 
     var city = $("#search").val();
     
+    // Validate that input is not empty
     if (city === "") {
       console.log("Invalid City");
       return;

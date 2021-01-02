@@ -271,18 +271,9 @@
       integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
       crossorigin="anonymous">
     </script>
-
-    <script>
-      $(document).ready(function() {
-        $(window).resize(function() {
-          var w = $(window).width();
-
-          if (w > 578) {
-            $("#search-history").addClass("show");
-          }
-        });
-      });
-    </script>
-
+    <!-- App Script: Window Function -->
+    <script src="window.js"></script>
+    <!-- Application JS -->
+    <script src="app.js"></script>
   </body>
 </html>

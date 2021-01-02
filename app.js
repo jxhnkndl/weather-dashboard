@@ -116,6 +116,30 @@ $(document).ready(function() {
   }
 
 
+  // Find weather icon from response
+  function getIcon(weatherCode) {
+
+    var iconCodes = [
+      { code: "01d", icon: "fas fa-sun" },
+      { code: "01n", icon: "fas fa-moon" },
+      { code: "02d", icon: "fas fa-cloud-sun" },
+      { code: "02n", icon: "fas fa-cloud-moon" },
+      { code: "03d", icon: "fas fa-cloud" },
+      { code: "03n", icon: "fas fa-cloud" },
+      { code: "04d", icon: "fas fa-cloud-sun" },
+      { code: "04n", icon: "fas fa-cloud-moon" },
+      { code: "09d", icon: "fas fa-cloud-showers-heavy" },
+      { code: "09n", icon: "fas fa-cloud-showers-heavy" },
+      { code: "11d", icon: "fas fa-bolt" },
+      { code: "11n", icon: "fas fa-bolt" },
+      { code: "13d", icon: "fas fa-snowflake" },
+      { code: "13n", icon: "fas fa-snowflake" },
+      { code: "50d", icon: "fas fa-smog" },
+      { code: "50n", icon: "fas fa-smog" }
+    ];
+  }
+
+
   // Event Listener: Search Button
   $("#search-form").on("submit", function(event) {
     event.preventDefault();

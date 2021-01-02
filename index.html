@@ -16,6 +16,10 @@
       crossorigin="anonymous"
     />
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+
     <!-- Font Awesome -->
     <link
       rel="stylesheet"
@@ -39,7 +43,7 @@
       <div class="row">
 
         <!-- Sidebar: Search + Search History -->
-        <aside class="col-sm-4 bg-light px-2 mt-3 rounded">
+        <aside class="col-sm-4 bg-light px-2 my-3 rounded">
 
           <!-- Search Input -->
           <form class="form-group mt-1">
@@ -70,49 +74,60 @@
           <section class="card">
 
             <!-- Current City -->
-            <div class="card-header">
-              <p class="h2 my-0">Boston</p>
+            <div class="card-header d-flex align-items-center list-group-item-info">
+              <p class="h2 my-0 mr-2">Boston</p>
+              <img class="float-right" src="http://openweathermap.org/img/w/10d.png" alt="">
             </div>
             
-            <div class="card-body">
+            <div class="card-body py-0">
               
-              <!-- Current Temperature -->
-              <div class="row">
+              <!-- Current Conditions -->
+              <div class="row d-flex align-items-center py-3">
                 <div class="col-8 col-md-6 col-lg-4">
-                  <p class="h5 mt-3 font-weight-bold">Temperature:</p>
+                  <p class="h5 font-weight-bold m-0">Conditions:</p>
                 </div>
                 <div class="col-4 col-md-6 col-lg-8 px-0">
-                  <p id="temperature" class="h5 mt-3">75&#176;</p>
+                  <p id="conditions" class="h5 m-0">Rain</p>
+                </div>
+              </div>
+
+              <!-- Current Temperature -->
+              <div class="row bg-light d-flex align-items-center py-3">
+                <div class="col-8 col-md-6 col-lg-4">
+                  <p class="h5 font-weight-bold m-0">Temperature:</p>
+                </div>
+                <div class="col-4 col-md-6 col-lg-8 px-0">
+                  <p id="temperature" class="h5 m-0">75&#176;</p>
                 </div>
               </div>
 
               <!-- Current Humidity -->
-              <div class="row">
+              <div class="row d-flex align-items-center py-3">
                 <div class="col-8 col-md-6 col-lg-4">
-                  <p class="h5 mt-3 font-weight-bold">Humidity:</p>
+                  <p class="h5 font-weight-bold m-0">Humidity:</p>
                 </div>
                 <div class="col-4 col-md-6 col-lg-8 px-0">
-                  <p id="humidity" class="h5 mt-3">41%</p>
+                  <p id="humidity" class="h5 m-0">41% RH</p>
                 </div>
               </div>
 
               <!-- Current Wind Speed -->
-              <div class="row">
+              <div class="row bg-light d-flex align-items-center py-3">
                 <div class="col-8 col-md-6 col-lg-4">
-                  <p class="h5 mt-3 font-weight-bold">Wind Speed:</p>
+                  <p class="h5 font-weight-bold m-0">Wind Speed:</p>
                 </div>
                 <div class="col-4 col-md-6 col-lg-8 px-0">
-                  <p id="wind-speed" class="h5 mt-3">4.7 MPH</p>
+                  <p id="wind-speed" class="h5 m-0">4.7 MPH</p>
                 </div>
               </div>
 
               <!-- Current UV Index -->
-              <div class="row">
+              <div class="row d-flex align-items-center py-3">
                 <div class="col-8 col-md-6 col-lg-4">
-                  <p class="h5 mt-3 font-weight-bold">UV Index:</p>
+                  <p class="h5 font-weight-bold m-0">UV Index:</p>
                 </div>
                 <div class="col-4 col-md-6 col-lg-8 px-0">
-                  <p id="uv-index" class="h5 mt-3">
+                  <p id="uv-index" class="h5 m-0">
                     <span class="bg-danger py-1 px-2 rounded">9.49</span>
                   </p>
                 </div>
@@ -121,86 +136,106 @@
           </section>
 
           <!-- Section: 5-Day Forecast -->
-          <section class="card mt-3">
-            <div class="card-header">
-              <p class="h2 my-0">5-Day Forecast:</p>
+          <section class="card my-3">
+            <div class="card-header d-flex align-items-center list-group-item-info py-3">
+              <p class="h2 my-0">5-Day Forecast</p>
             </div>
 
             <!-- 5-Day Flex Container -->
-            <div class="card-body d-flex flex-row flex-wrap justify-content-center px-2">
+            <div class="card-body py-0">
 
               <!-- Day 1 -->
-              <div class="five-day-card card text-center m-2">
-                <div class="card-header bg-info text-white">
-                  <p id="day-one-date" class="h6 text-white mb-0">12/31/2020</p>
+              <div class="row d-flex align-items-center py-3">
+                <div class="col-2 d-flex justify-content-center">
+                  <img id="day-one-icon" src="http://openweathermap.org/img/w/10d.png" alt="">
                 </div>
-                <div class="card-body bg-light">
-                  <img id="day-one-icon" src="">
-                  <p class="h6 font-weight-bold mb-0">Temp:</p>
-                  <p id="day-one-temp" class="h6 mb-3">75</p>
-                  <p class="h6 font-weight-bold mb-0">Humidity:</p>
-                  <p id="day-one-humidity" class="h6">40%</p>
+                <div class="col-3 pr-0">
+                  <p id="day-one-date" class="h5 text-info">Jan. 1</p>
+                  <p id="day-one-year" class="h6 font-weight-light m-0">2021</p>
+                </div>
+                <div class="col-7">
+                  <p id="day-one-conditions" class="h5 text-info">Thunderstorms</p>
+                  <p class="h6 font-weight-light m-0">
+                    <span id="day-one-temp">75&#176;</span> / 
+                    <span id="day-one-humidity">40% Humidity</span>
+                  </p>
                 </div>
               </div>
 
               <!-- Day 2 -->
-              <div class="five-day-card card text-center m-2">
-                <div class="card-header bg-info text-white">
-                  <p id="day-two-date" class="h6 text-white mb-0">12/31/2020</p>
+              <div class="row bg-light d-flex align-items-center py-3">
+                <div class="col-2 d-flex justify-content-center">
+                  <img id="day-two-icon" src="http://openweathermap.org/img/w/04n.png" alt="">
                 </div>
-                <div class="card-body bg-light">
-                  <img id="day-two-icon" src="">
-                  <p class="h6 font-weight-bold mb-0">Temp:</p>
-                  <p id="day-two-temp" class="h6 mb-3">75</p>
-                  <p class="h6 font-weight-bold mb-0">Humidity:</p>
-                  <p id="day-two-humidity" class="h6">40%</p>
+                <div class="col-3 pr-0">
+                  <p id="day-two-date" class="h5 text-info">Jan. 2</p>
+                  <p id="day-two-year" class="h6 font-weight-light m-0">2021</p>
+                </div>
+                <div class="col-7">
+                  <p id="day-two-conditions" class="h5 text-info">Cloudy</p>
+                  <p class="h6 font-weight-light m-0">
+                    <span id="day-two-temp">75&#176;</span> / 
+                    <span id="day-two-humidity">40% Humidity</span>
+                  </p>
                 </div>
               </div>
 
               <!-- Day 3 -->
-              <div class="five-day-card card text-center m-2">
-                <div class="card-header bg-info text-white">
-                  <p id="day-three-date" class="h6 text-white mb-0">12/31/2020</p>
+              <div class="row bg-light d-flex align-items-center py-3">
+                <div class="col-2 d-flex justify-content-center">
+                  <img id="day-three-icon" src="http://openweathermap.org/img/w/13d.png" alt="">
                 </div>
-                <div class="card-body bg-light">
-                  <img id="day-three-icon" src="">
-                  <p class="h6 font-weight-bold mb-0">Temp:</p>
-                  <p id="day-three-temp" class="h6 mb-3">75</p>
-                  <p class="h6 font-weight-bold mb-0">Humidity:</p>
-                  <p id="day-three-humidity" class="h6">40%</p>
+                <div class="col-3 pr-0">
+                  <p id="day-three-date" class="h5 text-info">Jan. 3</p>
+                  <p id="day-three-year" class="h6 font-weight-light m-0">2021</p>
+                </div>
+                <div class="col-7">
+                  <p id="day-three-conditions" class="h5 text-info">Snow</p>
+                  <p class="h6 font-weight-light m-0">
+                    <span id="day-three-temp">75&#176;</span> / 
+                    <span id="day-three-humidity">40% Humidity</span>
+                  </p>
                 </div>
               </div>
 
               <!-- Day 4 -->
-              <div class="five-day-card card text-center m-2">
-                <div class="card-header bg-info text-white">
-                  <p id="day-four-date" class="h6 text-white mb-0">12/31/2020</p>
+              <div class="row bg-light d-flex align-items-center py-3">
+                <div class="col-2 d-flex justify-content-center">
+                  <img id="day-four-icon" src="http://openweathermap.org/img/w/50d.png" alt="">
                 </div>
-                <div class="card-body bg-light">
-                  <img id="day-four-icon" src="">
-                  <p class="h6 font-weight-bold mb-0">Temp:</p>
-                  <p id="day-four-temp" class="h6 mb-3">75</p>
-                  <p class="h6 font-weight-bold mb-0">Humidity:</p>
-                  <p id="day-four-humidity" class="h6">40%</p>
+                <div class="col-3 pr-0">
+                  <p id="day-four-date" class="h5 text-info">Jan. 4</p>
+                  <p id="day-four-year" class="h6 font-weight-light m-0">2021</p>
+                </div>
+                <div class="col-7">
+                  <p id="day-four-conditions" class="h5 text-info">Fog</p>
+                  <p class="h6 font-weight-light m-0">
+                    <span id="day-four-temp">75&#176;</span> / 
+                    <span id="day-four-humidity">40% Humidity</span>
+                  </p>
                 </div>
               </div>
 
               <!-- Day 5 -->
-              <div class="five-day-card card text-center m-2">
-                <div class="card-header bg-info text-white">
-                  <p id="day-five-date" class="h6 text-white mb-0">12/31/2020</p>
+              <div class="row d-flex align-items-center py-3">
+                <div class="col-2 d-flex justify-content-center">
+                  <img id="day-five-icon" src="http://openweathermap.org/img/w/10d.png" alt="">
                 </div>
-                <div class="card-body bg-light">
-                  <img id="day-five-icon" src="">
-                  <p class="h6 font-weight-bold mb-0">Temp:</p>
-                  <p id="day-five-temp" class="h6 mb-3">75</p>
-                  <p class="h6 font-weight-bold mb-0">Humidity:</p>
-                  <p id="day-five-humidity" class="h6">40%</p>
+                <div class="col-3 pr-0">
+                  <p id="day-five-date" class="h5 text-info">Jan. 1</p>
+                  <p id="day-five-year" class="h6 font-weight-light m-0">2021</p>
+                </div>
+                <div class="col-7">
+                  <p id="day-five-conditions" class="h5 text-info">Thunderstorms</p>
+                  <p class="h6 font-weight-light m-0">
+                    <span id="day-five-temp">75&#176;</span> / 
+                    <span id="day-five-humidity">40% Humidity</span>
+                  </p>
                 </div>
               </div>
+
             </div>
           </section>
-
         </main>
       </div>
     </div>

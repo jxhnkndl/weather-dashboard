@@ -3,8 +3,10 @@ $(document).ready(function() {
   $(window).resize(function() {
     var w = $(window).width();
 
-    if (w > 578) {
+    if (w >= 578) {
       $("#search-history").addClass("show");
+    } else {
+      $("#search-history").removeClass("show");
     }
   });
 });

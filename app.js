@@ -6,6 +6,7 @@ $(document).ready(function() {
 
 
   // API Query Parameters
+  var baseURL = "http://api.openweathermap.org/data/2.5/";
   var APIKey = "f4d6848eb3a488816cecbd2392d8a108";
   var units = "imperial";
 
@@ -23,55 +24,64 @@ $(document).ready(function() {
 
   // Get weather from API
   function getWeather(city) {
+    var responseData = {};
 
-    var baseURL = "http://api.openweathermap.org/data/2.5/";
-    var weatherData = {};
+    // Wait for results from first two API calls before proceeding
+    $.when(
 
-    // Current weather conditions
-    $.ajax({
-      url: baseURL + "weather",
-      method: "GET",
-      data: {
-        q: city,
-        units: units,
-        appid: APIKey
-      }
-    }).then(function(response) {
-      console.log(response);
-      weatherData.current = response;
+      // API Call #1: Get current weather
+      $.ajax({
+        url: baseURL + "weather",
+        method: "GET",
+        data: {
+          q: city,
+          units: units,
+          appid: APIKey,
+        },
+        success: function(response) {
+          responseData.current = response;
+        }
+      }),
 
-      // UV Index - Requires coordinates from previous API response
+      // API Call #2: Get 5 day forecast
+      $.ajax({
+        url: baseURL + "forecast",
+        method: "GET",
+        data: {
+          q: city,
+          units: units,
+          appid: APIKey
+        },
+        success: function(response) {
+          responseData.forecast = response;
+        }
+      })
+    )
+    // When current/forecast data gets returned
+    .done(function() {
+
+      // Use the coordinates returned to request UV index data
       $.ajax({
         url: baseURL + "uvi",
         method: "GET",
         data: {
-          lat: response.coord.lat,
-          lon: response.coord.lon,
+          lat: responseData.current.coord.lat,
+          lon: responseData.current.coord.lon,
           appid: APIKey
+        },
+        success: function(response) {
+          responseData.uv = response;
         }
-      }).then(function(response) {
-        console.log(response);
-        weatherData.uv = response;
+      })
+      // When the UV index data gets returned
+      .done(function() {
+
+        console.log(responseData);
+
+        // Use all three response objects to display weather data in UI
+        displayWeather(responseData);
       });
     });
-
-    // 5 day forecast
-    $.ajax({
-      url: baseURL + "forecast",
-      method: "GET",
-      data: {
-        q: city,
-        units: units,
-        appid: APIKey
-      }
-    }).then(function(response) {
-      console.log(response);
-      weatherData.forecast = response;
-    });
-
-    // Render the weather data to the UI
-    console.log(weatherData);
-    displayWeather(weatherData);
   }
 
 

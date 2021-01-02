@@ -20,34 +20,59 @@ $(document).ready(function() {
 
   // Get weather from API
   function getCurrentWeather(city) {
-    var baseURL = "http://api.openweathermap.org/data/2.5/weather";
+    var baseURL = "http://api.openweathermap.org/data/2.5/";
+    var responseData = {};
 
-    $.ajax({
-      url: baseURL,
-      method: "GET",
-      data: {
-        q: city,
-        units: units,
-        appid: APIKey
-      }
-    }).then(function(response) {
-      console.log(response);
-      displayCurrentWeather(response);
+    // Collect response data from all API calls before proceeding
+    $.when(
+      // API Call #1: Get current weather conditions
+      $.ajax({
+        url: baseURL + "weather",
+        method: "GET",
+        data: {
+          q: city,
+          units: units,
+          appid: APIKey
+        }
+      }).then(function(response) {
+        responseData.current = response;
+
+        // API Call #2: Get UV index using coordinates returned by first call
+        $.ajax({
+          url: baseURL + "uvi",
+          method: "GET",
+          data: {
+            lat: response.coord.lat,
+            lon: response.coord.lon,
+            appid: APIKey
+          }
+        }).then(function(response) {
+          responseData.uv = response;
+        });
+      }),
+
+      // API Call #3: Get 5 day forecast in 3 hour increments
+      $.ajax({
+        url: baseURL + "forecast",
+        method: "GET",
+        data: {
+          q: city,
+          units: units,
+          appid: APIKey
+        }
+      }).then(function(response) {
+        responseData.forecast = response;
+      })
+    )
+    // When API has responded to all three requests
+    .then(function() {
+
     });
   }
 
   // Display weather data in UI
-  function displayCurrentWeather(weather) {
+  function displayWeather(weather) {
 
-    // Current weather conditions
-    $("#city").text(weather.name)
-    $("#icon").attr("src", `http://openweathermap.org/img/w/${weather.weather[0].icon}.png`);
-    $("#icon").attr("alt", weather.weather[0].description);
-    $("#conditions").text(weather.weather[0].main)
-    $("#temperature").text(`${weather.main.temp}&#176;`);
-    $("#humidity").text(`${weather.main.humidity}%`);
-    $("#wind-speed").text(weather.wind.speed)
-    $("#uv-index")
   }
 
   // Event Listener: Search Button

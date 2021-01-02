@@ -58,8 +58,12 @@
             </button>
           </form>
 
+          <button id="collapse-search-history" class="btn btn-block btn-info d-sm-none" type="button" data-toggle="collapse" data-target="#search-history" aria-expanded="false" aria-controls="collapseExample">
+            Previous Searches
+          </button>
+
           <!-- Search History -->
-          <ul class="list-group mt-3">
+          <ul id="search-history" class="list-group collapse mt-3">
             <li class="list-group-item list-group-item-info font-weight-bold">Previous Cities:</li>
             <li class="list-group-item">Boston</li>
             <li class="list-group-item">New York</li>
@@ -267,5 +271,18 @@
       integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
       crossorigin="anonymous">
     </script>
+
+    <script>
+      $(document).ready(function() {
+        $(window).resize(function() {
+          var w = $(window).width();
+
+          if (w > 578) {
+            $("#search-history").addClass("show");
+          }
+        });
+      });
+    </script>
+
   </body>
 </html>

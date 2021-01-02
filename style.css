@@ -1,3 +1,7 @@
+body {
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+}
+
 @media (min-width: 1200px) {
   .five-day-card {
     max-width: 20%;

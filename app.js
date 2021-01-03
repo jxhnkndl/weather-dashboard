@@ -181,20 +181,24 @@ $(document).ready(function() {
   // Create 5 day forecast from API data
   function createForecast(data) {
     var weatherData = data.forecast.list;
-    var weatherArray = [];
+    var forecastData = [];
 
     var firstIndex = weatherData.findIndex(function(element, index) {
       var date = element.dt_txt;
+      
+      var hour = dayjs(date).hour();
       var isTomorrow = dayjs().isBefore(date, "day");
 
-      return isTomorrow;
+      if (isTomorrow && hour === 12) {
+        return true;
+      }
     });
 
     for (var i = firstIndex; i < weatherData.length; i += 8) {
-      weatherArray.push(weatherData[i]);
+      forecastData.push(weatherData[i]);
     }
 
-    return weatherArray;
+    return forecastData;
   }
 
 

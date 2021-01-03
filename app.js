@@ -10,6 +10,7 @@ $(document).ready(function() {
   var APIKey = "f4d6848eb3a488816cecbd2392d8a108";
   var units = "imperial";
 
+
   // Icon array
   var icons = [
     { code: "01d", class: "fas fa-sun" },
@@ -107,25 +108,32 @@ $(document).ready(function() {
   }
 
 
-  // Display weather data in UI
-  function displayWeather(data) {
+  // Icon replacement
+  function replaceIcon(iconCode) {
+    var iconClass;
 
-    // Current Weather: City
-    $("#city").text(data.current.name);
-
-    // Current Weather: Icon (Replaces API icon with cleaner Font Awesome icon)
     $.each(icons, function(index, icon) {
-      if (data.current.weather[0].icon === icon.code) {
-        $("#icon").removeClass().addClass(`h2 ${icon.class}`);
+      if (iconCode === icon.code) {
+        iconClass = icon.class;
       } 
     });
 
-    // Current Weather: Condition fields
+    return iconClass;
+  }
+
+  // Display weather data in UI
+  function displayWeather(data) {
+
+    // Current Weather: Basic fields
+    $("#city").text(data.current.name);
     $("#conditions").text(data.current.weather[0].main);
     $("#temperature").text(`${data.current.main.temp}\u00B0`);
     $("#humidity").text(`${data.current.main.humidity}%`);
     $("#wind-speed").text(`${data.current.wind.speed} mph`);
     $("#uv-index").text(data.uv.value);
+
+    var newIcon = replaceIcon(data.current.weather[0].icon);
+    $("#icon").removeClass().addClass(`h2 ${newIcon}`);
 
     // Remove existing background color from UV index
     $("#uv-index").removeClass("bg-success bg-warning bg-danger")
@@ -140,19 +148,33 @@ $(document).ready(function() {
     } else {
       console.log("Invalid UV index value.");
     }
+
+    // Get 5 day forecast array
+    var forecast = createForecast(data);
+
+    console.log(forecast);
+
+
   }
 
 
-  // Find weather icon from response
-  function getIcon(data) {
+  // Create 5 day forecast from API data
+  function createForecast(data) {
+    var weatherData = data.forecast.list;
+    var weatherArray = [];
 
-    console.log(data);
+    var firstIndex = weatherData.findIndex(function(element, index) {
+      var date = element.dt_txt;
+      var isTomorrow = dayjs().isBefore(date, "day");
 
-    var iconCode = data.current.weather.icon;
+      return isTomorrow;
+    });
 
-    console.log(iconCode);
+    for (var i = firstIndex; i < weatherData.length; i += 8) {
+      weatherArray.push(weatherData[i]);
+    }
 
-    
+    return weatherArray;
   }
 
 

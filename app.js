@@ -40,8 +40,12 @@ $(document).ready(function() {
 
   // Application setup
   function init() {
+
     // Set current date in page header
     $("#today").text(currentDate);
+
+    // Initialize app with data from DC
+    getWeather("Washington DC");
   }
 
 

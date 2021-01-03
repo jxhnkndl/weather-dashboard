@@ -154,7 +154,23 @@ $(document).ready(function() {
 
     console.log(forecast);
 
+    // Render 5 day forecast
+    $.each(forecast, function(i, day) {
 
+      var date = dayjs(day.dt_txt).format("MMM. D");
+      var year = dayjs(day.dt_txt).format("YYYY");
+
+      var iconClasses = replaceIcon(day.weather[0].icon);
+
+      $(`#day-${i + 1}-icon`).removeClass().addClass(`h2 text-info ${iconClasses}`);
+
+      $(`#day-${i + 1}-date`).text(date);
+      $(`#day-${i + 1}-year`).text(year);
+
+      $(`#day-${i + 1}-conditions`).text(day.weather[0].main);
+      $(`#day-${i + 1}-temp`).text(`${parseInt(day.main.temp)}\u00B0`);
+      $(`#day-${i + 1}-humidity`).text(`${day.main.humidity}% Humidity`);
+    });
   }
 
 

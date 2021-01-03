@@ -2,13 +2,35 @@ $(document).ready(function() {
 
   // Init day.js
   var now = dayjs();
-  var currentDate = now.format("dddd MMM. M, YYYY");
+  var currentDate = now.format("dddd MMM. D, YYYY");
 
 
   // API Query Parameters
   var baseURL = "http://api.openweathermap.org/data/2.5/";
   var APIKey = "f4d6848eb3a488816cecbd2392d8a108";
   var units = "imperial";
+
+  // Icon array
+  var icons = [
+    { code: "01d", class: "fas fa-sun" },
+    { code: "01n", class: "fas fa-moon" },
+    { code: "02d", class: "fas fa-cloud-sun" },
+    { code: "02n", class: "fas fa-cloud-moon" },
+    { code: "03d", class: "fas fa-cloud" },
+    { code: "03n", class: "fas fa-cloud" },
+    { code: "04d", class: "fas fa-cloud-sun" },
+    { code: "04n", class: "fas fa-cloud-moon" },
+    { code: "09d", class: "fas fa-cloud-rain" },
+    { code: "09n", class: "fas fa-cloud-rain" },
+    { code: "10d", class: "fas fa-cloud-showers-heavy" },
+    { code: "10n", class: "fas fa-cloud-showers-heavy" },
+    { code: "11d", class: "fas fa-bolt" },
+    { code: "11n", class: "fas fa-bolt" },
+    { code: "13d", class: "fas fa-snowflake" },
+    { code: "13n", class: "fas fa-snowflake" },
+    { code: "50d", class: "fas fa-smog" },
+    { code: "50n", class: "fas fa-smog" }
+  ];
 
 
   // Initialize application
@@ -88,22 +110,27 @@ $(document).ready(function() {
   // Display weather data in UI
   function displayWeather(data) {
 
-    // Current weather conditions
+    // Current Weather: City
     $("#city").text(data.current.name);
 
-    $("#icon").attr(
-      "src", 
-      `http://openweathermap.org/img/w/${data.current.weather[0].icon}.png`);
-    $("#icon").attr("alt", data.current.weather[0].description);
+    // Current Weather: Icon (Replaces API icon with cleaner Font Awesome icon)
+    $.each(icons, function(index, icon) {
+      if (data.current.weather[0].icon === icon.code) {
+        $("#icon").removeClass().addClass(`h2 ${icon.class}`);
+      } 
+    });
 
+    // Current Weather: Condition fields
     $("#conditions").text(data.current.weather[0].main);
     $("#temperature").text(`${data.current.main.temp}\u00B0`);
     $("#humidity").text(`${data.current.main.humidity}%`);
     $("#wind-speed").text(`${data.current.wind.speed} mph`);
-
-    $("#uv-index").removeClass("bg-success bg-warning bg-danger")
     $("#uv-index").text(data.uv.value);
 
+    // Remove existing background color from UV index
+    $("#uv-index").removeClass("bg-success bg-warning bg-danger")
+
+    // Select background color for UV index based on conditions from EPA
     if (data.uv.value < 3) {
       $("#uv-index").addClass("bg-success");
     } else if (data.uv.value >= 3 && data.uv.value < 6) {
@@ -117,26 +144,15 @@ $(document).ready(function() {
 
 
   // Find weather icon from response
-  function getIcon(weatherCode) {
+  function getIcon(data) {
 
-    var iconCodes = [
-      { code: "01d", icon: "fas fa-sun" },
-      { code: "01n", icon: "fas fa-moon" },
-      { code: "02d", icon: "fas fa-cloud-sun" },
-      { code: "02n", icon: "fas fa-cloud-moon" },
-      { code: "03d", icon: "fas fa-cloud" },
-      { code: "03n", icon: "fas fa-cloud" },
-      { code: "04d", icon: "fas fa-cloud-sun" },
-      { code: "04n", icon: "fas fa-cloud-moon" },
-      { code: "09d", icon: "fas fa-cloud-showers-heavy" },
-      { code: "09n", icon: "fas fa-cloud-showers-heavy" },
-      { code: "11d", icon: "fas fa-bolt" },
-      { code: "11n", icon: "fas fa-bolt" },
-      { code: "13d", icon: "fas fa-snowflake" },
-      { code: "13n", icon: "fas fa-snowflake" },
-      { code: "50d", icon: "fas fa-smog" },
-      { code: "50n", icon: "fas fa-smog" }
-    ];
+    console.log(data);
+
+    var iconCode = data.current.weather.icon;
+
+    console.log(iconCode);
+
+    
   }
 
 

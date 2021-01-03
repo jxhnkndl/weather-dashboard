@@ -5,8 +5,11 @@ $(document).ready(function() {
 
     if (w >= 578) {
       $("#search-history").addClass("show");
+      $("#collapse-search-history").hide();
     } else {
       $("#search-history").removeClass("show");
+      $("#collapse-search-history").show();
+
     }
   });
 });

@@ -68,8 +68,6 @@ $(document).ready(function() {
   // Application setup
   function init() {
 
-    console.log(window);
-
     // Show loading modal while data is retrieved asynchronously
     showLoading();
 
@@ -105,11 +103,11 @@ $(document).ready(function() {
   function showLoading() {
 
     $("#loading").modal("show");
-    $("main").css("opacity", "0.05");
+    $(".container").css("opacity", "0.05");
     
     setTimeout(function() {
       $("#loading").modal("hide");
-      $("main").animate({ opacity: 1 });
+      $(".container").animate({ opacity: 1 });
   
     }, 1000);
   }
@@ -189,10 +187,8 @@ $(document).ready(function() {
     });
 
     if (currentHour >= 06 && currentHour < 18) {
-      console.log(currentHour, icons[index].day);
       return icons[index].day;
     } else {
-      console.log(currentHour, icons[index].night);
       return icons[index].night;
     }
   }
@@ -285,6 +281,18 @@ $(document).ready(function() {
   }
 
 
+  // Add city to search history
+  function addToHistory(city) {
+
+    var li = $("<li>");
+    li.addClass("list-group-item");
+    li.text(city);
+
+    $("#search-history").prepend(li);
+
+  }
+
+
   // Event Listener: Search Button
   $("#search-form").on("submit", function(event) {
     event.preventDefault();
@@ -297,7 +305,8 @@ $(document).ready(function() {
       return;
     }
 
-    getWeather(city);
     showLoading();
+    getWeather(city);
+    addToHistory(city);
   });
 });

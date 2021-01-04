@@ -161,8 +161,14 @@ $(document).ready(function() {
 
   // Display weather data in UI
   function displayWeather(data) {
+    displayCurrentWeather(data);
+    displayForecast(data);
+  }
 
-    // Current Weather: Basic fields
+
+  function displayCurrentWeather(data) {
+
+    // Display basic text fields
     $("#city").text(data.current.name);
     $("#conditions").text(data.current.weather[0].main);
     $("#temperature").text(`${data.current.main.temp}\u00B0`);
@@ -170,6 +176,7 @@ $(document).ready(function() {
     $("#wind-speed").text(`${data.current.wind.speed} mph`);
     $("#uv-index").text(data.uv.value);
 
+    // Replace API supplied icon with equivalent Font Awesome icon
     var newIcon = replaceIcon(data.current.weather[0].icon);
     $("#icon").removeClass().addClass(`h2 ${newIcon}`);
 
@@ -186,25 +193,28 @@ $(document).ready(function() {
     } else {
       console.log("Invalid UV index value.");
     }
+  }
+
+
+  function displayForecast(data) {
 
     // Get 5 day forecast array
     var forecast = createForecast(data);
 
-    console.log(forecast);
-
-    // Render 5 day forecast
+    // Paint UI with 5 day forecast data
     $.each(forecast, function(i, day) {
 
+      // Format date for display
       var date = dayjs(day.dt_txt).format("MMM. D");
       var year = dayjs(day.dt_txt).format("YYYY");
 
+      // Replace API supplied icon with equivalent Font Awesome icon
       var iconClasses = replaceIcon(day.weather[0].icon);
-
       $(`#day-${i + 1}-icon`).removeClass().addClass(`h2 text-info ${iconClasses}`);
 
+      // Display basic text fields
       $(`#day-${i + 1}-date`).text(date);
       $(`#day-${i + 1}-year`).text(year);
-
       $(`#day-${i + 1}-conditions`).text(day.weather[0].main);
       $(`#day-${i + 1}-temp`).text(`${parseInt(day.main.temp)}\u00B0`);
       $(`#day-${i + 1}-humidity`).text(`${day.main.humidity}% Humidity`);

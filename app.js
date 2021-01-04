@@ -68,11 +68,46 @@ $(document).ready(function() {
   // Application setup
   function init() {
 
+    // Show loading modal while data is retrieved asynchronously
+    showLoading();
+
+    // Set initial search history visibility conditions
+    $("#search-history").addClass("show");
+    $("#collapse-search-history").hide();
+
     // Set current date in page header
     $("#today").text(currentDate);
 
     // Initialize app with data from DC
     getWeather("Washington DC");
+  }
+
+
+  // Show or hide search history based on browser window size
+  $(window).resize(function() {
+    var w = $(window).width();
+
+    if (w >= 578) {
+      $("#search-history").addClass("show");
+      $("#collapse-search-history").hide();
+    } else {
+      $("#search-history").removeClass("show");
+      $("#collapse-search-history").show();
+    }
+  });
+
+
+  // Show loading modal
+  function showLoading() {
+
+    $("#loading").modal("show");
+    $("main").css("opacity", "0.05");
+    
+    setTimeout(function() {
+      $("#loading").modal("hide");
+      $("main").animate({ opacity: 1 });
+  
+    }, 1000);
   }
 
 
@@ -259,5 +294,6 @@ $(document).ready(function() {
     }
 
     getWeather(city);
+    showLoading();
   });
 });

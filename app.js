@@ -68,12 +68,16 @@ $(document).ready(function() {
   // Application setup
   function init() {
 
+    console.log(window);
+
     // Show loading modal while data is retrieved asynchronously
     showLoading();
 
     // Set initial search history visibility conditions
-    $("#search-history").addClass("show");
-    $("#collapse-search-history").hide();
+    if (window.innerWidth >= 578) {
+      $("#search-history").addClass("show");
+      $("#collapse-search-history").hide();
+    }
 
     // Set current date in page header
     $("#today").text(currentDate);

@@ -95,27 +95,14 @@ $(document).ready(function() {
     } 
     // If there are cities saved to the search history
     else {
-      getWeather(cities[0]);
+      var lastCityIndex = cities.length - 1;
+      getWeather(cities[lastCityIndex]);
 
       $.each(cities, function(index, city) {
         displayCity(city);
       });
     }
   }
-
-
-  // Show or hide search history based on browser window size
-  $(window).resize(function() {
-    var w = $(window).width();
-
-    if (w >= 578) {
-      $("#search-history").addClass("show");
-      $("#collapse-search-history").hide();
-    } else {
-      $("#search-history").removeClass("show");
-      $("#collapse-search-history").show();
-    }
-  });
 
 
   // Show loading modal
@@ -287,7 +274,7 @@ $(document).ready(function() {
       var hour = dayjs(date).hour();
       var isTomorrow = dayjs().isBefore(date, "day");
 
-      if (isTomorrow && hour === 12) {
+      if (isTomorrow && hour >= 9 && hour <= 18) {
         return true;
       }
     });
@@ -311,8 +298,11 @@ $(document).ready(function() {
 
   // Save city to search history
   function saveToHistory(city) {
+
     getSearchHistory();
+
     cities.push(city);
+
     setSearchHistory();
   }
 
@@ -362,4 +352,19 @@ $(document).ready(function() {
 
     $("#search").val("");
   });
+});
+
+
+// Event Listener: Resize browser window
+// Expand or collapse search history based on browser window size
+$(window).resize(function() {
+  var w = $(window).width();
+
+  if (w >= 578) {
+    $("#search-history").addClass("show");
+    $("#collapse-search-history").hide();
+  } else {
+    $("#search-history").removeClass("show");
+    $("#collapse-search-history").show();
+  }
 });

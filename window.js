@@ -5,8 +5,6 @@ $(document).ready(function() {
   $("#search-history").addClass("show");
   $("#collapse-search-history").hide();
 
-  
-
   // Show or hide search history based on browser window size
   $(window).resize(function() {
     var w = $(window).width();

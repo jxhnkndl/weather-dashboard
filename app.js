@@ -171,7 +171,7 @@ $(document).ready(function() {
     // Display basic text fields
     $("#city").text(data.current.name);
     $("#conditions").text(data.current.weather[0].main);
-    $("#temperature").text(`${data.current.main.temp}\u00B0`);
+    $("#temperature").text(`${parseInt(data.current.main.temp)}\u00B0`);
     $("#humidity").text(`${data.current.main.humidity}%`);
     $("#wind-speed").text(`${data.current.wind.speed} mph`);
     $("#uv-index").text(data.uv.value);

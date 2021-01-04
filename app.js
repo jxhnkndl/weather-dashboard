@@ -13,24 +13,51 @@ $(document).ready(function() {
 
   // Icon array
   var icons = [
-    { code: "01d", class: "fas fa-sun" },
-    { code: "01n", class: "fas fa-moon" },
-    { code: "02d", class: "fas fa-cloud-sun" },
-    { code: "02n", class: "fas fa-cloud-moon" },
-    { code: "03d", class: "fas fa-cloud" },
-    { code: "03n", class: "fas fa-cloud" },
-    { code: "04d", class: "fas fa-cloud-sun" },
-    { code: "04n", class: "fas fa-cloud-moon" },
-    { code: "09d", class: "fas fa-cloud-rain" },
-    { code: "09n", class: "fas fa-cloud-rain" },
-    { code: "10d", class: "fas fa-cloud-showers-heavy" },
-    { code: "10n", class: "fas fa-cloud-showers-heavy" },
-    { code: "11d", class: "fas fa-bolt" },
-    { code: "11n", class: "fas fa-bolt" },
-    { code: "13d", class: "fas fa-snowflake" },
-    { code: "13n", class: "fas fa-snowflake" },
-    { code: "50d", class: "fas fa-smog" },
-    { code: "50n", class: "fas fa-smog" }
+    {
+      code: "01",
+      day: "fas fa-sun",
+      night: "fas fa-moon"
+    },
+    {
+      code: "02",
+      day: "fas fa-cloud-sun",
+      night: "fas fa-cloud-moon"
+    },
+    {
+      code: "03",
+      day: "fas fa-cloud",
+      night: "fas fa-cloud"
+    },
+    {
+      code: "04",
+      day: "fas fa-cloud-sun",
+      night: "fas fa-cloud-moon"
+    },
+    {
+      code: "09",
+      day: "fas fa-cloud-rain",
+      night: "fas fa-cloud-rain"
+    },
+    {
+      code: "10",
+      day: "fas fa-cloud-showers-heavy",
+      night: "fas fa-cloud-showers-heavy"
+    },
+    {
+      code: "11",
+      day: "fas fa-bolt",
+      night: "fas fa-bolt"
+    },
+    {
+      code: "13",
+      day: "fas fa-snowflake",
+      night: "fas fa-snowflake"
+    },
+    {
+      code: "50",
+      day: "fas fa-smog",
+      night: "fas fa-smog"
+    }
   ];
 
 
@@ -111,24 +138,37 @@ $(document).ready(function() {
     });
   }
 
-
-  // Icon replacement
+  
+  // Replace icon from API with equivalent icon from Font Awesome
   function replaceIcon(iconCode) {
-    var iconClass;
+    var number = iconCode.slice(0, 2);
+    var dayOrNight = iconCode.slice(2);
+    var currentHour = dayjs().hour();
 
-    $.each(icons, function(index, icon) {
-      if (iconCode === icon.code) {
-        iconClass = icon.class;
-      } 
+    var index = icons.findIndex(function(icon, index) {
+      return icon.code === number;
     });
 
-    return iconClass;
+    if (currentHour >= 06 && currentHour < 18) {
+      console.log(currentHour, icons[index].day);
+      return icons[index].day;
+    } else {
+      console.log(currentHour, icons[index].night);
+      return icons[index].night;
+    }
   }
+
 
   // Display weather data in UI
   function displayWeather(data) {
+    displayCurrentWeather(data);
+    displayForecast(data);
+  }
 
-    // Current Weather: Basic fields
+
+  function displayCurrentWeather(data) {
+
+    // Display basic text fields
     $("#city").text(data.current.name);
     $("#conditions").text(data.current.weather[0].main);
     $("#temperature").text(`${data.current.main.temp}\u00B0`);
@@ -136,6 +176,7 @@ $(document).ready(function() {
     $("#wind-speed").text(`${data.current.wind.speed} mph`);
     $("#uv-index").text(data.uv.value);
 
+    // Replace API supplied icon with equivalent Font Awesome icon
     var newIcon = replaceIcon(data.current.weather[0].icon);
     $("#icon").removeClass().addClass(`h2 ${newIcon}`);
 
@@ -152,25 +193,28 @@ $(document).ready(function() {
     } else {
       console.log("Invalid UV index value.");
     }
+  }
+
+
+  function displayForecast(data) {
 
     // Get 5 day forecast array
     var forecast = createForecast(data);
 
-    console.log(forecast);
-
-    // Render 5 day forecast
+    // Paint UI with 5 day forecast data
     $.each(forecast, function(i, day) {
 
+      // Format date for display
       var date = dayjs(day.dt_txt).format("MMM. D");
       var year = dayjs(day.dt_txt).format("YYYY");
 
+      // Replace API supplied icon with equivalent Font Awesome icon
       var iconClasses = replaceIcon(day.weather[0].icon);
-
       $(`#day-${i + 1}-icon`).removeClass().addClass(`h2 text-info ${iconClasses}`);
 
+      // Display basic text fields
       $(`#day-${i + 1}-date`).text(date);
       $(`#day-${i + 1}-year`).text(year);
-
       $(`#day-${i + 1}-conditions`).text(day.weather[0].main);
       $(`#day-${i + 1}-temp`).text(`${parseInt(day.main.temp)}\u00B0`);
       $(`#day-${i + 1}-humidity`).text(`${day.main.humidity}% Humidity`);
@@ -181,20 +225,24 @@ $(document).ready(function() {
   // Create 5 day forecast from API data
   function createForecast(data) {
     var weatherData = data.forecast.list;
-    var weatherArray = [];
+    var forecastData = [];
 
     var firstIndex = weatherData.findIndex(function(element, index) {
       var date = element.dt_txt;
+      
+      var hour = dayjs(date).hour();
       var isTomorrow = dayjs().isBefore(date, "day");
 
-      return isTomorrow;
+      if (isTomorrow && hour === 12) {
+        return true;
+      }
     });
 
     for (var i = firstIndex; i < weatherData.length; i += 8) {
-      weatherArray.push(weatherData[i]);
+      forecastData.push(weatherData[i]);
     }
 
-    return weatherArray;
+    return forecastData;
   }
 
 

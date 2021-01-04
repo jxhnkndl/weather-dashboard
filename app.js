@@ -1,5 +1,9 @@
 $(document).ready(function() {
 
+  // Init local storage array
+  var cities = [];
+
+
   // Init day.js
   var now = dayjs();
   var currentDate = now.format("dddd MMM. D, YYYY");
@@ -76,6 +80,12 @@ $(document).ready(function() {
       $("#search-history").addClass("show");
       $("#collapse-search-history").hide();
     }
+
+    // Get cities stored in local storage and render to search history
+    getSearchHistory();
+    $.each(cities, function(index, city) {
+      displayCity(city);
+    });
 
     // Set current date in page header
     $("#today").text(currentDate);
@@ -281,15 +291,36 @@ $(document).ready(function() {
   }
 
 
-  // Add city to search history
-  function addToHistory(city) {
-
+  // Add city to search history in UI
+  function displayCity(city) {
     var li = $("<li>");
     li.addClass("list-group-item");
     li.text(city);
-
     $("#search-history").prepend(li);
+  }
 
+
+  // Save city to search history
+  function saveToHistory(city) {
+    getSearchHistory();
+    cities.push(city);
+    setSearchHistory();
+  }
+
+
+  // Get local storage
+  function getSearchHistory() {
+    if (localStorage.getItem("cities") === null) {
+      cities = [];
+    } else {
+      cities = JSON.parse(localStorage.getItem("cities"));
+    }
+  }
+
+
+  // Set local storage
+  function setSearchHistory() {
+    localStorage.setItem("cities", JSON.stringify(cities));
   }
 
 
@@ -307,6 +338,7 @@ $(document).ready(function() {
 
     showLoading();
     getWeather(city);
-    addToHistory(city);
+    displayCity(city);
+    saveToHistory(city);
   });
 });

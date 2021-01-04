@@ -2,6 +2,10 @@ body {
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 
+#delete-history {
+  cursor: pointer;
+}
+
 @media (min-width: 1200px) {
   .five-day-card {
     max-width: 20%;

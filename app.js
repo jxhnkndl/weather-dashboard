@@ -1,7 +1,8 @@
 $(document).ready(function() {
 
-  // Init local storage array
+  // Init local storage array and current city holding variable
   var cities = [];
+  var currentCity;
 
 
   // Init day.js
@@ -83,15 +84,23 @@ $(document).ready(function() {
 
     // Get cities stored in local storage and render to search history
     getSearchHistory();
-    $.each(cities, function(index, city) {
-      displayCity(city);
-    });
 
     // Set current date in page header
     $("#today").text(currentDate);
 
-    // Initialize app with data from DC
-    getWeather("Washington DC");
+
+    // If there are no cities saved to the search history
+    if (cities.length === 0) {
+      getWeather("New York");
+    } 
+    // If there are cities saved to the search history
+    else {
+      getWeather(cities[0]);
+
+      $.each(cities, function(index, city) {
+        displayCity(city);
+      });
+    }
   }
 
 
@@ -294,7 +303,7 @@ $(document).ready(function() {
   // Add city to search history in UI
   function displayCity(city) {
     var li = $("<li>");
-    li.addClass("list-group-item");
+    li.addClass("list-group-item search-item");
     li.text(city);
     $("#search-history").prepend(li);
   }
@@ -324,7 +333,17 @@ $(document).ready(function() {
   }
 
 
-  // Event Listener: Search Button
+  // Event Listenr: Delete search history from UI and local storage
+  $("#delete-history").on("click", function() {
+    $(".search-item").remove();
+
+    cities.splice(0, cities.length - 1);
+
+    setSearchHistory();
+  });
+
+
+  // Event Listener: Search
   $("#search-form").on("submit", function(event) {
     event.preventDefault();
 
@@ -340,5 +359,7 @@ $(document).ready(function() {
     getWeather(city);
     displayCity(city);
     saveToHistory(city);
+
+    $("#search").val("");
   });
 });

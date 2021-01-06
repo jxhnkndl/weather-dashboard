@@ -266,32 +266,7 @@ $(document).ready(function() {
 
 
   // Create 5 day forecast from API data
-  // function createForecast(data) {
-  //   var weatherData = data.forecast.list;
-  //   var forecastData = [];
-
-  //   var firstIndex = weatherData.findIndex(function(element, index) {
-  //     var date = element.dt_txt;
-      
-  //     var hour = dayjs(date).hour();
-  //     var isTomorrow = dayjs().isBefore(date, "day");
-
-  //     if (isTomorrow && hour >= 9 && hour <= 18) {
-  //       return true;
-  //     }
-  //   });
-
-  //   for (var i = firstIndex; i < weatherData.length; i += 8) {
-  //     forecastData.push(weatherData[i]);
-  //   }
-
-  //   return forecastData;
-  // }
-
-
-  // Create 5 day forecast from API data
   function createForecast(data) {
-
     var forecastData = data.forecast.list;
     var fiveDayForecast = [];
 
@@ -300,9 +275,12 @@ $(document).ready(function() {
       hour: dayjs(data.forecast.list[0].dt_txt).hour()
     };
 
-    console.log(firstResult);
-
-    // Determine which hourly forecasts to display on the page; since it's difficult to predict when the first and last hourly forecast gets included in the API's response, this logic ensures that the application shows daily data for the noon hour whenever available while ensuring that the application never leaves a slot in the five day forecast blank
+    // Since the API returns 5 day forecast data in 3 hour increments, logic needs to determine 
+    // which of those incremental forecasts to display on the page. The first two if/else if 
+    // statements control which forecasts to render when the 12 PM forecasts are not available
+    // for the fifth day of the 5 day forecast. The last else statement, which also covers the largest
+    // number of potential situations, finds the 12 PM hour for each of the 5 days to render on the
+    // page.
 
     if (firstResult.hour === 6) {
       for (var i = 10; i < forecastData.length; i += 8) {
@@ -383,7 +361,7 @@ $(document).ready(function() {
   });
 
 
-  // Event Listener: Search
+  // Event Listener: Search button
   $("#search-form").on("submit", function(event) {
     event.preventDefault();
 

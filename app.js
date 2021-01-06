@@ -242,6 +242,8 @@ $(document).ready(function() {
     // Get 5 day forecast array
     var forecast = createForecast(data);
 
+    console.log(forecast);
+
     // Paint UI with 5 day forecast data
     $.each(forecast, function(i, day) {
 
@@ -264,26 +266,74 @@ $(document).ready(function() {
 
 
   // Create 5 day forecast from API data
-  function createForecast(data) {
-    var weatherData = data.forecast.list;
-    var forecastData = [];
+  // function createForecast(data) {
+  //   var weatherData = data.forecast.list;
+  //   var forecastData = [];
 
-    var firstIndex = weatherData.findIndex(function(element, index) {
-      var date = element.dt_txt;
+  //   var firstIndex = weatherData.findIndex(function(element, index) {
+  //     var date = element.dt_txt;
       
-      var hour = dayjs(date).hour();
-      var isTomorrow = dayjs().isBefore(date, "day");
+  //     var hour = dayjs(date).hour();
+  //     var isTomorrow = dayjs().isBefore(date, "day");
 
-      if (isTomorrow && hour >= 9 && hour <= 18) {
-        return true;
+  //     if (isTomorrow && hour >= 9 && hour <= 18) {
+  //       return true;
+  //     }
+  //   });
+
+  //   for (var i = firstIndex; i < weatherData.length; i += 8) {
+  //     forecastData.push(weatherData[i]);
+  //   }
+
+  //   return forecastData;
+  // }
+
+
+  // Create 5 day forecast from API data
+  function createForecast(data) {
+
+    var forecastData = data.forecast.list;
+    var fiveDayForecast = [];
+
+    var firstResult = {
+      date: dayjs(data.forecast.list[0].dt_txt).date(),
+      hour: dayjs(data.forecast.list[0].dt_txt).hour()
+    };
+
+    console.log(firstResult);
+
+    // Determine which hourly forecasts to display on the page; since it's difficult to predict when the first and last hourly forecast gets included in the API's response, this logic ensures that the application shows daily data for the noon hour whenever available while ensuring that the application never leaves a slot in the five day forecast blank
+
+    if (firstResult.hour === 6) {
+      for (var i = 10; i < forecastData.length; i += 8) {
+        fiveDayForecast.push(forecastData[i]);
       }
-    });
 
-    for (var i = firstIndex; i < weatherData.length; i += 8) {
-      forecastData.push(weatherData[i]);
+      fiveDayForecast.push(forecastData[38]);
+
+    } else if (firstResult.hour <= 09 && firstResult.hour >= 12) {
+      for (var i = 9; i < forecastData.length; i +=8) {
+        fiveDayForecast.push(forecastData[i]);
+      }
+
+      fiveDayForecast.push(forecastData[39]);
+
+    } else {
+      var firstNoonIndex = forecastData.findIndex(function(forecast) {
+        var isTomorrow = dayjs().isBefore(forecast.dt_txt);
+        var hour = dayjs(forecast.dt_txt).hour();
+
+        if (isTomorrow && hour === 12) {
+          return true;
+        }
+      });
+
+      for (var i = firstNoonIndex; i < forecastData.length; i += 8) {
+        fiveDayForecast.push(forecastData[i]);
+      }
     }
-
-    return forecastData;
+    
+    return fiveDayForecast;
   }
 
 

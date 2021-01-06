@@ -2,8 +2,13 @@ body {
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 
+.search-item,
 #delete-history {
   cursor: pointer;
+}
+
+.search-item:hover {
+  background-color: #f8f9fa;
 }
 
 @media (min-width: 1200px) {

@@ -74,7 +74,7 @@ $(document).ready(function() {
   function init() {
 
     // Show loading modal while data is retrieved asynchronously
-    showLoading();
+    // showLoading();
 
     // Set initial search history visibility conditions
     if (window.innerWidth >= 578) {
@@ -361,15 +361,10 @@ $(document).ready(function() {
   });
 
 
-  // Event Listener: Hover over city in search history
-  $(".search-item").hover(
-    function() {
-      $(this).addClass("bg-light");
-    },
-    function() {
-      $(this).removeClass("bg-light");
-    }
-  );
+  // Event Listener: Click on city in search history
+  $(".search-item").on("click", function() {
+    getWeather($(this).text())
+  });
 
 
   // Event Listener: Search button
@@ -384,7 +379,6 @@ $(document).ready(function() {
       return;
     }
 
-    showLoading();
     getWeather(city);
     displayCity(city);
     saveToHistory(city);

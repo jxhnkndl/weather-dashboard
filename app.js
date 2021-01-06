@@ -74,7 +74,7 @@ $(document).ready(function() {
   function init() {
 
     // Show loading modal while data is retrieved asynchronously
-    // showLoading();
+    showLoading();
 
     // Set initial search history visibility conditions
     if (window.innerWidth >= 578) {

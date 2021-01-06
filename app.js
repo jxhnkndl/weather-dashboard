@@ -361,6 +361,17 @@ $(document).ready(function() {
   });
 
 
+  // Event Listener: Hover over city in search history
+  $(".search-item").hover(
+    function() {
+      $(this).addClass("bg-light");
+    },
+    function() {
+      $(this).removeClass("bg-light");
+    }
+  );
+
+
   // Event Listener: Search button
   $("#search-form").on("submit", function(event) {
     event.preventDefault();

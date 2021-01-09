@@ -73,9 +73,6 @@ $(document).ready(function() {
   // Application setup
   function init() {
 
-    // Show loading modal while data is retrieved asynchronously
-    // showLoading();
-
     // Set initial search history visibility conditions
     if (window.innerWidth >= 578) {
       $("#search-history").addClass("show");
@@ -102,20 +99,6 @@ $(document).ready(function() {
         displayCity(city);
       });
     }
-  }
-
-
-  // Show loading modal
-  function showLoading() {
-
-    $("#loading").modal("show");
-    $(".container").css("opacity", "0.05");
-    
-    setTimeout(function() {
-      $("#loading").modal("hide");
-      $(".container").animate({ opacity: 1 });
-  
-    }, 1000);
   }
 
 
@@ -158,6 +141,22 @@ $(document).ready(function() {
 
       displayForecast(responseData);
     });
+  }
+
+
+  // Get UV index data from API
+  function getUVindex(coordinates) {
+    $.ajax({
+      url: baseURL + "uvi",
+      method: "GET",
+      data: {
+        lat: coordinates.lat,
+        lon: coordinates.lon,
+        appid: APIKey
+      }
+    }).then(function(response) {
+      displayUV(response);
+    }); 
   }
 
 

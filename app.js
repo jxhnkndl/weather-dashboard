@@ -340,9 +340,10 @@ $(document).ready(function() {
 
 
   // Event Listener: Get weather data for city in search history
-  $(".search-item").on("click", function() {
-    getWeather($(this).text())
+  $("#search-history").on("click", ".search-item", function() {
+    getWeather($(this).text());
   });
+
 
   // Event Listener: Search button
   $("#search-form").on("submit", function(event) {

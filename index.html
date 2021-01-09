@@ -34,22 +34,6 @@
   </head>
   <body>
 
-    <!-- Loading Modal -->
-    <div class="modal fade" id="loading" tabindex="-1" aria-labelledby="loading-label" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header d-flex justify-content-center">
-            <p class="modal-title h4 text-info text-center" id="loading-label">Here comes the sun...</p>
-          </div>
-          <div class="modal-body d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-info" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Header -->
     <header class="bg-info p-4 mb-2 text-center">
       <h1 class="font-weight-bold text-white">
@@ -75,6 +59,7 @@
             </button>
           </form>
 
+          <!-- Previous Searches Button (only visible at smaller breakpoints) -->
           <button id="collapse-search-history" class="btn btn-block btn-info" type="button" data-toggle="collapse" data-target="#search-history" aria-expanded="false" aria-controls="collapseExample">
             Previous Searches
           </button>

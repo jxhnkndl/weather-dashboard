@@ -73,9 +73,6 @@ $(document).ready(function() {
   // Application setup
   function init() {
 
-    // Show loading modal while data is retrieved asynchronously
-    // showLoading();
-
     // Set initial search history visibility conditions
     if (window.innerWidth >= 578) {
       $("#search-history").addClass("show");
@@ -105,80 +102,61 @@ $(document).ready(function() {
   }
 
 
-  // Show loading modal
-  function showLoading() {
-
-    $("#loading").modal("show");
-    $(".container").css("opacity", "0.05");
-    
-    setTimeout(function() {
-      $("#loading").modal("hide");
-      $(".container").animate({ opacity: 1 });
-  
-    }, 1000);
-  }
-
-
   // Get weather from API
   function getWeather(city) {
     var responseData = {};
 
-    // Wait for results from first two API calls before proceeding
-    $.when(
+    // API Call #1: Get current weather
+    $.ajax({
+      url: baseURL + "weather",
+      method: "GET",
+      data: {
+        q: city,
+        units: units,
+        appid: APIKey,
+      }
+    }).then(function(response) {
+      responseData.current = response;
 
-      // API Call #1: Get current weather
-      $.ajax({
-        url: baseURL + "weather",
-        method: "GET",
-        data: {
-          q: city,
-          units: units,
-          appid: APIKey,
-        },
-        success: function(response) {
-          responseData.current = response;
-        }
-      }),
+      var coordinates = {
+        lat: responseData.current.coord.lat,
+        lon: responseData.current.coord.lon
+      }
 
-      // API Call #2: Get 5 day forecast
-      $.ajax({
-        url: baseURL + "forecast",
-        method: "GET",
-        data: {
-          q: city,
-          units: units,
-          appid: APIKey
-        },
-        success: function(response) {
-          responseData.forecast = response;
-        }
-      })
-    )
-    // When current/forecast data gets returned
-    .done(function() {
-
-      // Use the coordinates returned to request UV index data
-      $.ajax({
-        url: baseURL + "uvi",
-        method: "GET",
-        data: {
-          lat: responseData.current.coord.lat,
-          lon: responseData.current.coord.lon,
-          appid: APIKey
-        },
-        success: function(response) {
-          responseData.uv = response;
-        }
-      })
-      // When the UV index data gets returned
-      .done(function() {
-
-        console.log(responseData);
-
-        // Use all three response objects to display weather data in UI
-        displayWeather(responseData);
-      });
+      getUVindex(coordinates);
+      displayCurrentWeather(responseData);
     });
+
+    // API Call #2: Get 5 day forecast
+    $.ajax({
+      url: baseURL + "forecast",
+      method: "GET",
+      data: {
+        q: city,
+        units: units,
+        appid: APIKey
+      }
+    }).then(function(response) {
+      responseData.forecast = response;
+
+      displayForecast(responseData);
+    });
+  }
+
+
+  // Get UV index data from API
+  function getUVindex(coordinates) {
+    $.ajax({
+      url: baseURL + "uvi",
+      method: "GET",
+      data: {
+        lat: coordinates.lat,
+        lon: coordinates.lon,
+        appid: APIKey
+      }
+    }).then(function(response) {
+      displayUV(response);
+    }); 
   }
 
   
@@ -200,13 +178,7 @@ $(document).ready(function() {
   }
 
 
-  // Display weather data in UI
-  function displayWeather(data) {
-    displayCurrentWeather(data);
-    displayForecast(data);
-  }
-
-
+  // Display current weather forecast in UI
   function displayCurrentWeather(data) {
 
     // Display basic text fields
@@ -215,21 +187,26 @@ $(document).ready(function() {
     $("#temperature").text(`${parseInt(data.current.main.temp)}\u00B0 F`);
     $("#humidity").text(`${data.current.main.humidity}%`);
     $("#wind-speed").text(`${data.current.wind.speed} mph`);
-    $("#uv-index").text(data.uv.value);
 
     // Replace API supplied icon with equivalent Font Awesome icon
     var newIcon = replaceIcon(data.current.weather[0].icon);
     $("#icon").removeClass().addClass(`h2 ${newIcon}`);
+  }
+
+
+  // Display UV index in UI
+  function displayUV(data) {
+    $("#uv-index").text(data.value);
 
     // Remove existing background color from UV index
     $("#uv-index").removeClass("bg-success bg-warning bg-danger")
 
     // Select background color for UV index based on conditions from EPA
-    if (data.uv.value < 3) {
+    if (data.value < 3) {
       $("#uv-index").addClass("bg-success");
-    } else if (data.uv.value >= 3 && data.uv.value < 6) {
+    } else if (data.value >= 3 && data.value < 6) {
       $("#uv-index").addClass("bg-warning");
-    } else if (data.uv.value >= 6) {
+    } else if (data.value >= 6) {
       $("#uv-index").addClass("bg-danger");
     } else {
       console.log("Invalid UV index value.");

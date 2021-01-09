@@ -338,12 +338,10 @@ $(document).ready(function() {
     setSearchHistory();
   });
 
-
   // Event Listener: Get weather data for city in search history
   $("#search-history").on("click", ".search-item", function() {
     getWeather($(this).text());
   });
-
 
   // Event Listener: Search button
   $("#search-form").on("submit", function(event) {
@@ -371,9 +369,7 @@ $(document).ready(function() {
   });
 });
 
-
 // Event Listener: Resize browser window
-// Expand or collapse search history based on browser window size
 $(window).resize(function() {
 
   // Get current window width

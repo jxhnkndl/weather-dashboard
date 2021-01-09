@@ -4,19 +4,16 @@ $(document).ready(function() {
   var cities = [];
   var currentCity;
 
-
   // Init day.js
   var now = dayjs();
   var currentDate = now.format("dddd MMM. D, YYYY");
-
 
   // API Query Parameters
   var baseURL = "https://api.openweathermap.org/data/2.5/";
   var APIKey = "f4d6848eb3a488816cecbd2392d8a108";
   var units = "imperial";
 
-
-  // Icon array
+  // Replacemenet icon array
   var icons = [
     {
       code: "01",
@@ -65,13 +62,13 @@ $(document).ready(function() {
     }
   ];
 
-
   // Initialize application
   init();
 
-
-  // Application setup
   function init() {
+
+    // Set current date in page header
+    $("#today").text(currentDate);
 
     // Set initial search history visibility conditions
     if (window.innerWidth >= 578) {
@@ -79,19 +76,14 @@ $(document).ready(function() {
       $("#collapse-search-history").hide();
     }
 
-    // Get cities stored in local storage and render to search history
+    // Load cities in local storage back into application
     getSearchHistory();
 
-    // Set current date in page header
-    $("#today").text(currentDate);
-
-
-    // If there are no cities saved to the search history
+    // If no cities are saved, load weather data for New York City; otherwise, get weather data for the last searched city and render all saved cities back into the search history
     if (cities.length === 0) {
       getWeather("New York");
-    } 
-    // If there are cities saved to the search history
-    else {
+
+    } else {
       var lastCityIndex = cities.length - 1;
       getWeather(cities[lastCityIndex]);
 
@@ -101,8 +93,7 @@ $(document).ready(function() {
     }
   }
 
-
-  // Get weather from API
+  // Get weather and 5 day forecast data from API
   function getWeather(city) {
     var responseData = {};
 
@@ -118,6 +109,7 @@ $(document).ready(function() {
     }).then(function(response) {
       responseData.current = response;
 
+      // Save the coordinates from the response to request UV index data
       var coordinates = {
         lat: responseData.current.coord.lat,
         lon: responseData.current.coord.lon
@@ -138,13 +130,11 @@ $(document).ready(function() {
       }
     }).then(function(response) {
       responseData.forecast = response;
-
       displayForecast(responseData);
     });
   }
 
-
-  // Get UV index data from API
+  // Get UV index data using coordinates returned by the API in current weather data
   function getUVindex(coordinates) {
     $.ajax({
       url: baseURL + "uvi",
@@ -159,45 +149,32 @@ $(document).ready(function() {
     }); 
   }
 
-
-  // Get UV index data from API
-  function getUVindex(coordinates) {
-    $.ajax({
-      url: baseURL + "uvi",
-      method: "GET",
-      data: {
-        lat: coordinates.lat,
-        lon: coordinates.lon,
-        appid: APIKey
-      }
-    }).then(function(response) {
-      displayUV(response);
-    }); 
-  }
-
-  
   // Replace icon from API with equivalent icon from Font Awesome
   function replaceIcon(iconCode) {
+
+    // Parse data used in replacing the icon
     var number = iconCode.slice(0, 2);
     var dayOrNight = iconCode.slice(2);
     var currentHour = dayjs().hour();
 
+    // Find the matching icon
     var index = icons.findIndex(function(icon, index) {
       return icon.code === number;
     });
 
+    // Determine whether to use the daytime or nighttime version of the icon
     if (currentHour >= 06 && currentHour < 18) {
       return icons[index].day;
+
     } else {
       return icons[index].night;
     }
   }
 
-
   // Display current weather forecast in UI
   function displayCurrentWeather(data) {
 
-    // Display basic text fields
+    // Display text fields
     $("#city").text(data.current.name);
     $("#conditions").text(data.current.weather[0].main);
     $("#temperature").text(`${parseInt(data.current.main.temp)}\u00B0 F`);
@@ -210,32 +187,35 @@ $(document).ready(function() {
   }
 
 
-  // Display UV index in UI
+  // Display UV index and UV condition color in UI
   function displayUV(data) {
+
+    // Display text field
     $("#uv-index").text(data.value);
 
-    // Remove existing background color from UV index
+    // Remove existing color class
     $("#uv-index").removeClass("bg-success bg-warning bg-danger")
 
-    // Select background color for UV index based on conditions from EPA
+    // Determine condition color to apply to UV index
     if (data.value < 3) {
       $("#uv-index").addClass("bg-success");
+
     } else if (data.value >= 3 && data.value < 6) {
       $("#uv-index").addClass("bg-warning");
+
     } else if (data.value >= 6) {
       $("#uv-index").addClass("bg-danger");
+
     } else {
       console.log("Invalid UV index value.");
     }
   }
 
-
+  // Display 5 day forecast in UI
   function displayForecast(data) {
 
-    // Get 5 day forecast array
+    // Create the 5 day forecast from 3 hour blocks returned by API
     var forecast = createForecast(data);
-
-    console.log(forecast);
 
     // Paint UI with 5 day forecast data
     $.each(forecast, function(i, day) {
@@ -263,6 +243,7 @@ $(document).ready(function() {
     var forecastData = data.forecast.list;
     var fiveDayForecast = [];
 
+    // Get date and hour of the first result returned by API
     var firstResult = {
       date: dayjs(data.forecast.list[0].dt_txt).date(),
       hour: dayjs(data.forecast.list[0].dt_txt).hour()
@@ -320,15 +301,17 @@ $(document).ready(function() {
   // Save city to search history
   function saveToHistory(city) {
 
+    // Get cities saved to local history into cities array
     getSearchHistory();
 
+    // Add the city to the local storage array
     cities.push(city);
 
+    // Set local storage
     setSearchHistory();
   }
 
-
-  // Get local storage
+  // Get cities saved in local storage
   function getSearchHistory() {
     if (localStorage.getItem("cities") === null) {
       cities = [];
@@ -337,28 +320,29 @@ $(document).ready(function() {
     }
   }
 
-
   // Set local storage
   function setSearchHistory() {
     localStorage.setItem("cities", JSON.stringify(cities));
   }
 
-
-  // Event Listenr: Delete search history from UI and local storage
+  // Event Listenr: Delete search history
   $("#delete-history").on("click", function() {
+
+    // Remove from UI
     $(".search-item").remove();
 
+    // Remove from local storage array
     cities.splice(0, cities.length - 1);
 
+    // Reset search history
     setSearchHistory();
   });
 
 
-  // Event Listener: Click on city in search history
+  // Event Listener: Get weather data for city in search history
   $(".search-item").on("click", function() {
     getWeather($(this).text())
   });
-
 
   // Event Listener: Search button
   $("#search-form").on("submit", function(event) {
@@ -372,10 +356,16 @@ $(document).ready(function() {
       return;
     }
 
+    // Get weather data from API
     getWeather(city);
+
+    // Add city to search history in UI
     displayCity(city);
+
+    // Add city to local storage
     saveToHistory(city);
 
+    // Reset input field
     $("#search").val("");
   });
 });
@@ -384,8 +374,11 @@ $(document).ready(function() {
 // Event Listener: Resize browser window
 // Expand or collapse search history based on browser window size
 $(window).resize(function() {
+
+  // Get current window width
   var w = $(window).width();
 
+  // If window is wider than 578px, expand search history; otherwise, collapse it
   if (w >= 578) {
     $("#search-history").addClass("show");
     $("#collapse-search-history").hide();

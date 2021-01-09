@@ -74,7 +74,7 @@ $(document).ready(function() {
   function init() {
 
     // Show loading modal while data is retrieved asynchronously
-    showLoading();
+    // showLoading();
 
     // Set initial search history visibility conditions
     if (window.innerWidth >= 578) {
@@ -212,7 +212,7 @@ $(document).ready(function() {
     // Display basic text fields
     $("#city").text(data.current.name);
     $("#conditions").text(data.current.weather[0].main);
-    $("#temperature").text(`${parseInt(data.current.main.temp)}\u00B0`);
+    $("#temperature").text(`${parseInt(data.current.main.temp)}\u00B0 F`);
     $("#humidity").text(`${data.current.main.humidity}%`);
     $("#wind-speed").text(`${data.current.wind.speed} mph`);
     $("#uv-index").text(data.uv.value);
@@ -259,7 +259,7 @@ $(document).ready(function() {
       $(`#day-${i + 1}-date`).text(date);
       $(`#day-${i + 1}-year`).text(year);
       $(`#day-${i + 1}-conditions`).text(day.weather[0].main);
-      $(`#day-${i + 1}-temp`).text(`${parseInt(day.main.temp)}\u00B0`);
+      $(`#day-${i + 1}-temp`).text(`${parseInt(day.main.temp)}\u00B0 F`);
       $(`#day-${i + 1}-humidity`).text(`${day.main.humidity}% Humidity`);
     });
   }

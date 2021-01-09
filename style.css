@@ -2,6 +2,10 @@ body {
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 
+.container {
+  padding-bottom: 40px;
+}
+
 .search-item,
 #delete-history {
   cursor: pointer;
